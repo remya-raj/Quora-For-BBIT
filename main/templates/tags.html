@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}All Tags{% endblock %}
+{% block content %}
+    <!-- Question List -->
+    <div class="container">
+        <div style="margin-top: 25px;">
+            {% for tag in tags %}
+            
+            <button type="button" class="btn btn-outline-dark" style="margin: 10px;">{{tag.name}}</button>
+            <!-- <div class="col-2">
+                <div class="card">
+                    <div class="card-body">
+                        <p class="card-text"><a href="/tag/{{tag.name|slugify}}">{{tag.name}} 
+                            <span class="badge badge-info">{{tag.count}}</span></a></p>
+                    </div>
+                </div>
+            </div> -->
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
