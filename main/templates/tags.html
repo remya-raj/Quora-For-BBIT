@@ -6,8 +6,9 @@
     <div class="container">
         <div style="margin-top: 25px;">
             {% for tag in tags %}
+                <button type="button" class="btn btn-outline-dark" style="margin: 10px;"><a href="/tag/{{tag.name|slugify}}" style="color: black;">{{tag.name}} 
+                    <span class="badge badge-info">{{tag.count}}</span></a></button>
             
-            <button type="button" class="btn btn-outline-dark" style="margin: 10px;">{{tag.name}}</button>
             <!-- <div class="col-2">
                 <div class="card">
                     <div class="card-body">

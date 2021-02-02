@@ -5,7 +5,7 @@
 {% block content %}
 <!-- Question List -->
     <div class="container">
-        <h2 class="my-4">{{quest.title}}</h2>
+        <h5 class="my-4">{{quest.title}}</h5>
         <p>{{quest.detail}}</p>
         <p>
             tags:
@@ -24,27 +24,27 @@
                 <div class="upvote">
                     <strong class="upvote-count-{{answer.id}}">{{answer.upvote_set.count}}</strong><br/>
                     <span class="text-success">
-                        <i class="fa fa-arrow-up fa-2x upvote-click" data-answer="{{answer.id}}"></i>
+                        <i class="fa fa-arrow-up fa-1x upvote-click" data-answer="{{answer.id}}"></i>
                     </span>
                 </div>
                 <div class="downvote mt-3">
                     <span class="text-danger">
-                        <i class="fa fa-arrow-down fa-2x downvote-click" data-answer="{{answer.id}}"></i>
+                        <i class="fa fa-arrow-down fa-1x downvote-click" data-answer="{{answer.id}}"></i>
                     </span><br/>
                     <strong class="downvote-count-{{answer.id}}">{{answer.downvote_set.count}}</strong>
                 </div>
             </div>
-            <div class="col-11">
-                <p>
-                    {{ answer.detail }}
-                </p>
+            <div class="col-11" style="padding-left:5px;">
+                <div class="mb-3">
+                    <p> {{answer.detail }}</p>
+                    </div>
                 <p>
                     <a href="#" class="mr-3">{{answer.user.username}}</a>
                     <span class="mr-3"><span class="comment-count-{{answer.id}}">{{answer.comment_set.count}}</span> comments</span>
                     <span>{{answer.add_time|date:'d/m/Y h:i:s'}}</span>
                 </p>
                 <!-- Comment Section Start -->
-                <h3 class="my-4">Comment</h3>
+                <!-- <h6 class="my-4">Comment</h5> -->
                 <div class="comment-wrapper-{{answer.id}}">
                     {% for comment in answer.comment_set.all %}
                     <div class="card mb-2">
@@ -60,9 +60,9 @@
                 {% if user.is_authenticated %}
                 <!-- Comment Form -->
                 <div class="card my-3">
-                    <h6 class="card-header">Add Comment</h6>
+                    <h6 class="card-header">Comment</h6>
                     <div class="card-body" >
-                        <textarea class="form-control comment-text-{{answer.id}}"></textarea>
+                        <textarea placeholder="add comment" class="form-control comment-text-{{answer.id}}"></textarea>
                         <button type="button" data-answer="{{answer.id}}" class="btn btn-dark my-3 save-comment">Submit</button>
                     </div>
                 </div>
@@ -76,16 +76,15 @@
         {% for msg in messages %}
             <p class="text-success">{{msg}}</p>
         {% endfor %}
-        <form method="post">
+        <form method="post" action="{% url 'detail' quest.id %}">
             {% csrf_token %}
-            <table class="table table-bordered">
-                {{answerform.as_table}}
-                <tr>
-                    <td colspan="2">
-                        <input type="submit" class="btn btn-dark" />
-                    </td>
-                </tr>
-            </table>
+            <div class="mb-3">
+                <label for="exampleFormControlTextarea1" class="form-label"><h4>Add Answer</h4></label>
+                <textarea name="detail" class="form-control" type="textarea" rows="10" cols="30" placeholder="Write your answer" id="exampleFormControlTextarea1" rows="3"></textarea>
+                <div class="mb-3" style="margin-top:15px; margin-left:10px">
+                    <button class="btn btn-primary">Submit</button>
+                </div>
+            </div>
         </form>
         {% endif %}
     </div>

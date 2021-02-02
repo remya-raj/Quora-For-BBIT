@@ -5,7 +5,8 @@
     <div class="row">
         <div class="col-md-3">
             <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-            <a class="nav-link active" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab" aria-controls="v-pills-home" aria-selected="true" >Profile</a>
+                <a class="nav-link " id="v-pills-profile-tab" data-toggle="pill" href="#" role="tab" aria-controls="v-pills-home" aria-selected="true" ><h5 style="color: black; ">Welcome {{request.user.username}}! </h5></a>
+                <a class="nav-link active" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab" aria-controls="v-pills-home" aria-selected="true" >Profile</a>
                 <a class="nav-link" id="v-pills-questions-tab" data-toggle="pill" href="#v-pills-questions" role="tab" aria-controls="v-pills-questions" aria-selected="false" >Questions</a>
                 <a class="nav-link" id="v-pills-answers-tab" data-toggle="pill" href="#v-pills-answers" role="tab" aria-controls="v-pills-answers" aria-selected="false">Answers</a>
                 <a class="nav-link" id="v-pills-comments-tab" data-toggle="pill" href="#v-pills-comments" role="tab" aria-controls="v-pills-comments" aria-selected="false">Comments</a>
@@ -23,16 +24,49 @@
                             {% for msg in messages %}
                             <p class="text-success">{{msg}}</p>
                             {% endfor %}
-                            <form method="post">
+                            <form action="{% url 'profile' %}" method="post">
                                 {% csrf_token %}
-                                <table class="table table-bordered">
-                                    {{form.as_table}}
-                                    <tr>
-                                        <td colspan="2">
-                                            <button class="btn btn-primary">Submit</button>
-                                        </td>
-                                    </tr>
-                                </table>
+                                <form class="row g-3 needs-validation" novalidate>
+                                    <div class="col-md-4">
+                                      <label for="validationCustom01" class="form-label">First name</label>
+                                      <input name="first_name" type="text" class="form-control" id="validationCustom01" placeholder="first name"  value="{{request.user.first_name}}" required>
+                                      <div class="valid-feedback">
+                                        Looks good!
+                                      </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                      <label for="validationCustom02" class="form-label">Last name</label>
+                                      <input name="last_name" type="text" class="form-control" id="validationCustom02" placeholder="last name" value="{{request.user.last_name}}" required>
+                                      <div class="valid-feedback">
+                                        Looks good!
+                                      </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                      <label for="validationCustomUsername" class="form-label" >Username</label>
+                                      <div class="input-group has-validation">
+                                        <span class="input-group-text" id="inputGroupPrepend">@</span>
+                                        <input name="username" type="text" class="form-control" id="validationCustomUsername" placeholder="username" value="{{request.user.username}}" aria-describedby="inputGroupPrepend" required>
+                                        <div class="invalid-feedback">
+                                          Please choose a username.
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                      <label for="validationCustom03" class="form-label">Bio</label>
+                                      <input name="bio" class="form-control" id="exampleFormControlTextarea1" placeholder="bio" value="{{request.user.bio}}" rows="3"></textarea>
+                  
+                                      <div class="invalid-feedback">
+                                        Please provide a valid city.
+                                      </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                      <label for="validationCustom05" class="form-label">Location</label>
+                                      <input name="location" type="text" class="form-control" placeholder="location" value="{{request.user.location}}" id="validationCustom05" required>
+                                    </div>
+                                    <div class="col-12" style="margin-top: 15px;">
+                                      <button class="btn btn-primary" type="submit">Save</button>
+                                    </div>
+                                  </form>
                             </form>
                         </div>
                     </div>
@@ -51,82 +85,106 @@
                 </div>
                 <!-- Answers -->
                 <div class="tab-pane fade" id="v-pills-answers" role="tabpanel" aria-labelledby="v-pills-answers-tab">
-                    <div class="card">
-                        <h5 class="card-header">My Answers <span class="badge badge-info">{{answers.count}}</span></h5>
-                        <div class="card-body">
-                            <table class="table table-bordered">
-                                <tr>
-                                    <th>Question</th>
-                                    <th>Answer</th>
-                                </tr>
-                                {% for ans in answers %}
-                                <tr>
-                                    <td><a href="/detail/{{ans.question.id}}">{{ans.question.title}}</a></td>
-                                    <td><a href="/detail/{{ans.question.id}}">{{ans.detail}}</a></td>
-                                </tr>
-                                {% endfor %}
-                            </table>
-                        </div>
-                    </div>
+                  <table class="table">
+                    <thead class="thead-light">
+                      <tr>
+                        <th scope="col"><h5>My Answers <span class="badge badge-info">{{answers.count}}</span></h5></th>
+                      </tr>
+                    </thead>
+                  </table>
+                  <table class="table">
+                    <thead class="thead-dark" style="margin: auto;">
+                      <tr>
+                        <th scope="col">Questions</th>
+                        <th scope="col">Answers</th>
+                      </tr>
+                    </thead>
+                    {% for ans in answers %}
+                    <tbody>
+                      <tr>
+                        <td><a href="/detail/{{ans.question.id}}">{{ans.question.title}}</a></td>
+                        <td><a href="/detail/{{ans.question.id}}">{{ans.detail}}</a></td>
+                      </tr>
+                    </tbody>
+                    {% endfor %}
+                  </table>
                 </div>
+
+                <!-- Comments -->
                 <div class="tab-pane fade" id="v-pills-comments" role="tabpanel" aria-labelledby="v-pills-comments-tab">
-                    <div class="card">
-                        <h5 class="card-header">My Comments <span class="badge badge-info">{{comments.count}}</span></h5>
-                        <div class="card-body">
-                            <table class="table table-bordered">
-                                <tr>
-                                    <th>Question</th>
-                                    <th>Answer</th>
-                                    <th>Comment</th>
-                                </tr>
-                                {% for comment in comments %}
-                                <tr>
-                                    <td><a href="/detail/{{comment.answer.question.id}}">{{comment.answer.question.title}}</a></td>
-                                    <td><a href="/detail/{{comment.answer.questionans.question.id}}">{{comment.answer.detail}}</a></td>
-                                    <td><a href="/detail/{{comment.answer.question.id}}">{{comment.comment}}</a></td>
-                                </tr>
-                                {% endfor %}
-                            </table>
-                        </div>
-                    </div>
+                  <table class="table">
+                    <thead class="thead-light">
+                      <tr>
+                        <th scope="col"><h5>My Comments <span class="badge badge-info">{{comments.count}}</span></h5></th>
+                      </tr>
+                    </thead>
+                  </table>
+                  <table class="table">
+                    <thead class="thead-dark">
+                      <tr>
+                        <th scope="col">Questions</th>
+                        <th scope="col">Answers</th>
+                        <th scope="col">Comment</th>
+                      </tr>
+                    </thead>
+                    {% for comment in comments %}
+                      <tr>
+                        <td><a href="/detail/{{comment.answer.question.id}}">{{comment.answer.question.title}}</a></td>
+                        <td><a href="/detail/{{comment.answer.questionans.question.id}}">{{comment.answer.detail}}</a></td>
+                        <td><a href="/detail/{{comment.answer.question.id}}">{{comment.comment}}</a></td>
+                      </tr>
+                    {% endfor %}
+                  </table>
                 </div>
-                <div class="tab-pane fade" id="v-pills-upvotes" role="tabpanel" aria-labelledby="v-pills-upvotes-tab">
-                    <div class="card">
-                        <h5 class="card-header">My Comments <span class="badge badge-info">{{upvotes.count}}</span></h5>
-                        <div class="card-body">
-                    <table class="table table-bordered">
-                        <tr>
-                            <th>Question</th>
-                            <th>Answer</th>
-                        </tr>
-                        {% for upvote in upvotes %}
+
+                <!-- UpVotes -->
+                <div class="tab-pane fade" id="v-pills-upvotes" role="tabpanel" aria-labelledby="v-pills-upvotes-tab">  
+                  <table class="table">
+                    <thead class="thead-light">
+                      <tr>
+                        <th scope="col"><h5>My Upvotes <span class="badge badge-info">{{upvotes.count}}</span></h5></th>
+                      </tr>
+                    </thead>
+                  </table>
+                  <table class="table">
+                    <thead class="thead-dark">
+                      <tr>
+                        <th scope="col">Questions</th>
+                        <th scope="col">Answers</th>
+                      </tr>
+                    </thead>
+                    {% for upvote in upvotes %}
                         <tr>
                             <td><a href="/detail/{{upvote.answer.question.id}}">{{upvote.answer.question.title}}</a></td>
                             <td><a href="/detail/{{upvote.answer.question.id}}">{{upvote.answer.detail}}</a></td>
                         </tr>
-                        {% endfor %}
-                    </table>
-                    </div>
-                    </div>
+                    {% endfor %}
+                  </table>  
                 </div>
+
+                <!-- DownVotes -->
                 <div class="tab-pane fade" id="v-pills-downvotes" role="tabpanel" aria-labelledby="v-pills-downvotes-tab">
-                    <div class="card">
-                        <h5 class="card-header">My Comments <span class="badge badge-info">{{downvotes.count}}</span></h5>
-                        <div class="card-body">
-                    <table class="table table-bordered">
+                  <table class="table">
+                    <thead class="thead-light">
+                      <tr>
+                        <th scope="col"><h5>My Downvotes <span class="badge badge-info">{{downvotes.count}}</span></h5></th>
+                      </tr>
+                    </thead>
+                  </table>
+                  <table class="table">
+                    <thead class="thead-dark">
+                      <tr>
+                        <th scope="col">Questions</th>
+                        <th scope="col">Answers</th>
+                      </tr>
+                    </thead>
+                    {% for downvote in downvotes %}
                         <tr>
-                            <th>Question</th>
-                            <th>Answer</th>
+                          <td><a href="/detail/{{downvote.answer.question.id}}">{{downvote.answer.question.title}}</a></td>
+                          <td><a href="/detail/{{downvote.answer.question.id}}">{{downvote.answer.detail}}</a></td>
                         </tr>
-                        {% for downvote in downvotes %}
-                        <tr>
-                            <td><a href="/detail/{{downvote.answer.question.id}}">{{downvote.answer.question.title}}</a></td>
-                            <td><a href="/detail/{{downvote.answer.question.id}}">{{downvote.answer.detail}}</a></td>
-                        </tr>
-                        {% endfor %}
-                    </table>
-                    </div>
-                    </div>
+                    {% endfor %}
+                  </table>  
                 </div>
             </div>
         </div>

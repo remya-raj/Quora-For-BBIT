@@ -5,29 +5,47 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Questions</title>
+    <!-- Animate 4 -->
+    <link rel="stylesheet" href="{% static 'animate.min.css' %}" />
     <!-- Bootstrap 4 -->
     <link rel="stylesheet" href="{% static 'bootstrap.min.css' %}" />
+    <!-- Font Awesome 4 -->
+    <link rel="stylesheet" href="{% static 'fa4/css/font-awesome.min.css' %}" />
+    <!-- Jquery -->
+    <script src="{% static 'jquery-3.5.1.min.js' %}"></script>
+    <!-- Bootstrap 4 Js -->
+    <script src="{% static 'bootstrap.min.js' %}"></script>
+    
 </head>
-<body style="background-color: #d8d9f0;">
+<body style="background-color: #DFE1EC;">
+
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
-            <a class="navbar-brand" href="{% url 'home' %}">Quora For BBIT</a>
+            <a class="navbar-brand" href="/">Quora For BBIT</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
+                <form class="ml-auto" action="/show-question">
+                    <div class="input-group">
+                        <input type="text" name="q" class="form-control" placeholder="Search" />
+                        <div class="input-group-append">
+                        <button class="btn btn-primary" type="submit" id="button-addon2" >Search</button>
+                        </div>
+                    </div>
+                </form>
                 <ul class="navbar-nav ml-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'home' %}">Home</a>
-                    </li>
                     <li class="nav-item active">
+                        <a class="nav-link" href="/">Home</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="{% url 'show-question' %}">Questions</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="/tags">Tags</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/ask-question">Ask</a>
+                        <a class="nav-link" href="{% url 'ask-question' %}">Ask</a>
                     </li>
                     {% if user.is_authenticated %}
                     <li class="nav-item">
@@ -71,12 +89,12 @@
         {% for quest in quests %}
         <div class="card mb-4 shadow">
             <div class="card-body">
-                <h4 class="card-title"><a href="/detail/{{quest.id}}">{{quest.title}}</a></h4>
+                <h5 class="card-title"><a href="/detail/{{quest.id}}" style="color: black;">{{quest.title}}</a></h5>
                 <p class="card-text">{{quest.detail}}</p>
                 <p>
-                    <a href="#" class="mr-2">{{quest.user.username}}</a>
-                    <a href="#" class="mr-2">{{quest.answer_set.count}} Answers</a>
-                    <a href="#" class="mr-2">{{quest.total_comments}} Comments</a>
+                    <a href="#" class="mr-2" style="color: #1C166B;">{{quest.user.username}}</a>
+                    <a href="#" class="mr-2"style="color: #1C166B;">{{quest.answer_set.count}} Answers</a>
+                    <a href="#" class="mr-2"style="color: #1C166B;">{{quest.total_comments}} Comments</a>
                 </p>
             </div>
             <div class="card-footer">
